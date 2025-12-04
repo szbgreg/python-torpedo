@@ -12,7 +12,7 @@ def create_board():
     return board
 
 """ Játékosok tábláinak kirajzolása """
-def print_boards(board):
+def print_boards(enemy_board, player_board):
     print()
     print("*" * 55)
     print(" " * 10 + "ENEMY" + " " * 24 + "PLAYER")
@@ -38,7 +38,13 @@ def print_boards(board):
 
         # Ellenfél tábla sorai
         for j in range(10):
-            print(board[i][j], end=" ")
+            cell = enemy_board[i][j]
+
+            # Hajó elrejtése az ellenfél tábláján
+            if cell == '#':
+                print('.', end=" ")
+            else:
+                print(cell, end=" ")
 
         print(" " * 7, end="")
 
@@ -47,10 +53,26 @@ def print_boards(board):
 
         # Saját tábla sorai
         for j in range(10):
-            print(board[i][j], end=" ")
+            print(player_board[i][j], end=" ")
         print()
-
         
+""" Hajók elhelyezése a táblán """
+def place_ships(ships, board):
+    for ship in ships:
+        for position in ship:
+            row = int(position[1:]) - 1
+            col = ord(position[0]) - 65
+            board[row][col] = '#'
+            
+
 player_board = create_board()
-enemey_board = create_board()
-print_boards(player_board)
+enemy_board = create_board()
+
+enemy_ships = [["D3", "E3"], ["I8", "I9", "I10"], ["A10", "B10", "C10", "D10"]]
+player_ships = [["H8", "H9"], ["A1", "A2", "A3"], ["C5", "D5", "E5", "F5"]]
+
+place_ships(enemy_ships, enemy_board)
+place_ships(player_ships, player_board)
+
+print_boards(enemy_board, player_board)
+
