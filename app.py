@@ -63,7 +63,30 @@ def place_ships(ships, board):
             row = int(position[1:]) - 1
             col = ord(position[0]) - 65
             board[row][col] = '#'
-            
+
+
+""" Lövés bekérése a játékostól """
+def player_shot():
+
+    while True:
+        shot = input("Add meg a célpont koordinátáit (pl. A5): ").upper()
+        
+        col_char = shot[0] 
+        row_char = shot[1:]
+
+        if len(shot) < 2 or len(shot) > 3:
+            print("Érvénytelen koordináta. Próbáld újra.")
+            continue
+
+        if col_char < 'A' or col_char > 'J':
+            print("Érvénytelen oszlop. Próbáld újra.")
+            continue
+
+        if not row_char.isdigit() or int(row_char) < 1 or int(row_char) > 10:
+            print("Érvénytelen sor. Próbáld újra.")
+            continue
+        
+        return shot
 
 player_board = create_board()
 enemy_board = create_board()
@@ -73,6 +96,9 @@ player_ships = [["H8", "H9"], ["A1", "A2", "A3"], ["C5", "D5", "E5", "F5"]]
 
 place_ships(enemy_ships, enemy_board)
 place_ships(player_ships, player_board)
-
 print_boards(enemy_board, player_board)
+
+shot = player_shot()
+print(f"Lövés helye: {shot}")
+
 
