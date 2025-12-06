@@ -88,6 +88,22 @@ def player_shot():
         
         return shot
 
+""" Lövés feldolgozása """
+def process_shot(shot, board):
+    col = ord(shot[0]) - 65
+    row = int(shot[1:]) - 1
+
+    cell = board[row][col]
+
+    if cell == '#':
+        board[row][col] = 'X'
+        return "Talált!"
+    elif cell == '.':
+        board[row][col] = 'O'
+        return "Mellé!"
+    else:
+        return "Ide már lőttél!"
+
 player_board = create_board()
 enemy_board = create_board()
 
@@ -99,6 +115,7 @@ place_ships(player_ships, player_board)
 print_boards(enemy_board, player_board)
 
 shot = player_shot()
-print(f"Lövés helye: {shot}")
+result = process_shot(shot, player_board)
 
+print_boards(enemy_board, player_board)
 
