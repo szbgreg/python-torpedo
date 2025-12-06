@@ -106,14 +106,14 @@ def process_shot(shot, board):
         return "Ide már lőttél!"
     
 """ Az ellenfél lövése """
-def enemy_shot():
+def enemy_shot(board):
+    while True:
+        col = randint(0, 9)
+        row = randint(0, 9)
 
-    col = randint(0, 9)
-    row = randint(0, 9)
-
-    shot = f"{chr(65 + col)}{row + 1}"
-    return shot
-
+        if board[row][col] in ['.', '#']:
+            shot = f"{chr(65 + col)}{row + 1}"
+            return shot
 
 player_board = create_board()
 enemy_board = create_board()
@@ -144,6 +144,8 @@ while True:
                 break
             else:
                 print("Találat! Lőhetsz még egyszer.")
+        elif result == "Ide már lőttél!":
+            print("Ide már lőttél! Próbáld újra.")
         else:
             current_player = "enemy"
             print("Mellé lőttél. Az ellenfél következik.")
@@ -153,7 +155,7 @@ while True:
     else:
         print()
         print("Az ellenfél köre következik.")
-        enemy_shot_coords = enemy_shot()
+        enemy_shot_coords = enemy_shot(player_board)
         result = process_shot(enemy_shot_coords, player_board)
         print_boards(enemy_board, player_board)
         print()
@@ -167,6 +169,9 @@ while True:
             else:
                 print("Az ellenfél talált! Újra lőhet.")
                 input("Nyomj egy entert a folytatáshoz...")
+
+        elif result == "Ide már lőttél!":
+            print("Az ellenfél hibázott és újra lőhet.")
         else:
             current_player = "player"
             print("Mellé lőtt.")
