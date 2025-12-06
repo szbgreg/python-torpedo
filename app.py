@@ -125,10 +125,12 @@ place_ships(player_ships, player_board)
 print_boards(enemy_board, player_board)
 
 player_shot_coords = player_shot()
-process_shot(player_shot_coords, player_board)
+process_shot(player_shot_coords, enemy_board)
 
 enemy_shot_coords = enemy_shot()
 
-process_shot(enemy_shot_coords, enemy_board)
+process_shot(enemy_shot_coords, player_board)
 print_boards(enemy_board, player_board)
+
+print(f"Ellenfél a(z) {enemy_shot_coords} koordinátára lőtt.")
 
