@@ -58,12 +58,46 @@ def print_boards(enemy_board, player_board):
         print()
         
 """ Hajók elhelyezése a táblán """
-def place_ships(ships, board):
-    for ship in ships:
-        for position in ship:
-            row = int(position[1:]) - 1
-            col = ord(position[0]) - 65
-            board[row][col] = '#'
+def random_place_ships(board):
+
+    ships_sizes = [2, 3, 4]
+
+    for size in ships_sizes:
+        placed = False
+
+        while not placed:
+            # Választunk random egy irányt ahol 0 a vízszintes és 1 a függőleges
+            orientation = randint(0, 1) 
+
+            # Választunk egy random kezdő pozíciót
+            # Figyyelembe vesszük a hajó méretét és az irányt is
+            row = randint(0, 9 - size) if orientation == 1 else randint(0, 9)
+            col = randint(0, 9 - size) if orientation == 0 else randint(0, 9)
+
+            can_place = True
+
+            # Ellenőrizzük, hogy elfér-e a hajó a kiválasztott pozícióban
+            if orientation == 0:
+                for i in range(size):
+                    if board[row][col + i] != '.':
+                        can_place = False
+                        break
+            else:
+                for i in range(size):
+                    if board[row + i][col] != '.':
+                        can_place = False
+                        break
+            
+            # Csak akkor rakjuk le a hajót, ha elfér
+            if can_place:
+                if orientation == 0:
+                    for i in range(size):
+                        board[row][col + i] = '#'
+                else:
+                    for i in range(size):
+                        board[row + i][col] = '#'
+
+                placed = True
 
 
 """ Lövés bekérése a játékostól """
@@ -118,11 +152,9 @@ def enemy_shot(board):
 player_board = create_board()
 enemy_board = create_board()
 
-enemy_ships = [["D3", "E3"], ["I8", "I9", "I10"], ["A10", "B10", "C10", "D10"]]
-player_ships = [["H8", "H9"], ["A1", "A2", "A3"], ["C5", "D5", "E5", "F5"]]
+random_place_ships(enemy_board)
+random_place_ships(player_board)
 
-place_ships(enemy_ships, enemy_board)
-place_ships(player_ships, player_board)
 print_boards(enemy_board, player_board)
 
 current_player = "player"
