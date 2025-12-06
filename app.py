@@ -1,3 +1,4 @@
+from random import randint
 
 """ 10x10-es üres tábla létrehozása """
 def create_board():
@@ -87,7 +88,7 @@ def player_shot():
             continue
         
         return shot
-
+       
 """ Lövés feldolgozása """
 def process_shot(shot, board):
     col = ord(shot[0]) - 65
@@ -103,6 +104,15 @@ def process_shot(shot, board):
         return "Mellé!"
     else:
         return "Ide már lőttél!"
+    
+""" Az ellenfél lövése """
+def enemy_shot():
+
+    col = randint(0, 9)
+    row = randint(0, 9)
+
+    shot = f"{chr(65 + col)}{row + 1}"
+    return shot
 
 player_board = create_board()
 enemy_board = create_board()
@@ -114,8 +124,11 @@ place_ships(enemy_ships, enemy_board)
 place_ships(player_ships, player_board)
 print_boards(enemy_board, player_board)
 
-shot = player_shot()
-result = process_shot(shot, player_board)
+player_shot_coords = player_shot()
+process_shot(player_shot_coords, player_board)
 
+enemy_shot_coords = enemy_shot()
+
+process_shot(enemy_shot_coords, enemy_board)
 print_boards(enemy_board, player_board)
 
