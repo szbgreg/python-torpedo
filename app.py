@@ -114,6 +114,7 @@ def enemy_shot():
     shot = f"{chr(65 + col)}{row + 1}"
     return shot
 
+
 player_board = create_board()
 enemy_board = create_board()
 
@@ -124,13 +125,48 @@ place_ships(enemy_ships, enemy_board)
 place_ships(player_ships, player_board)
 print_boards(enemy_board, player_board)
 
-player_shot_coords = player_shot()
-process_shot(player_shot_coords, enemy_board)
+current_player = "player"
 
-enemy_shot_coords = enemy_shot()
+while True:
 
-process_shot(enemy_shot_coords, player_board)
-print_boards(enemy_board, player_board)
+    if current_player == "player":
+        print()
+        print("A te köröd következik.")
+        player_shot_coords = player_shot()
+        result = process_shot(player_shot_coords, enemy_board)
+        print_boards(enemy_board, player_board)
+        print()
 
-print(f"Ellenfél a(z) {enemy_shot_coords} koordinátára lőtt.")
+        if result == "Talált!":
+            check_enemy_ships = any('#' in row for row in enemy_board)
+            if not check_enemy_ships:
+                print("Gratulálok! Megnyerted a játékot!")
+                break
+            else:
+                print("Találat! Lőhetsz még egyszer.")
+        else:
+            current_player = "enemy"
+            print("Mellé lőttél. Az ellenfél következik.")
+            input("Nyomj egy entert a folytatáshoz...")
 
+
+    else:
+        print()
+        print("Az ellenfél köre következik.")
+        enemy_shot_coords = enemy_shot()
+        result = process_shot(enemy_shot_coords, player_board)
+        print_boards(enemy_board, player_board)
+        print()
+        print(f"Az ellenfél a {enemy_shot_coords} koordinátára lőtt.")
+        
+        if result == "Talált!":
+            check_player_ships = any('#' in row for row in player_board)
+            if not check_player_ships:
+                print("Sajnos vesztettél. Az ellenfél nyert.")
+                break
+            else:
+                print("Az ellenfél talált! Újra lőhet.")
+                input("Nyomj egy entert a folytatáshoz...")
+        else:
+            current_player = "player"
+            print("Mellé lőtt.")
